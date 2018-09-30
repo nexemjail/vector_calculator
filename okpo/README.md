@@ -2,16 +2,30 @@ Install docker, minicube and kubectl via tutorial here:
 
 https://kubernetes.io/docs/tasks/tools/install-minikube/
 
-
 ```
 cd okpo
 minicube start
+```
+
+I am not sure all two are needed. But enable both.
+```
+minikube addons enable heapster 
+minikube addons enable metrics-server  
+```
+```
 eval $(minikube docker-env)
 docker build . -t okpo-lab
 kubectl apply -f deployment.yaml
 kubectl apply -f hpa.yaml
 kubectl expose deployment okpo-lab --type=LoadBalancer --name=okpo-lab --port=5000 --target-port=5000
 ```
+
+To watch the scaling the things in dashboard run
+```minikube dashboard```
+
+Or do this:
+```kubectl get hpa```
+
 
 See the port exposed via the command 
 ```kubectl get service```

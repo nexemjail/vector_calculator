@@ -1,15 +1,45 @@
+Install docker, minicube and kubectl via tutorial here:
+
+https://kubernetes.io/docs/tasks/tools/install-minikube/
+
+
 ```
 cd okpo
-docker build -t okpo/lab .
-docker run -p 5000:5000 okpo/lab:latest
+minicube start
+eval $(minikube docker-env)
+docker build . -t okpo-lab
+kubectl apply -f deployment.yaml
+kubectl apply -f hpa.yaml
+kubectl expose deployment okpo-lab --type=LoadBalancer --name=okpo-lab --port=5000 --target-port=5000
 ```
 
+See the port exposed via the command 
+```kubectl get service```
+To test scaling run 
+```
+MOLOTOV_PORT=(this-exposed-port) molotov test.py -p 1 -w 40 -d 500
+```
 
+To delete all the stuff run 
 ```
-curl -X POST 127.0.0.1:5000\
-    -d '{"v1":1, "v2":2}'\
-     -H "Content-Type: application/json"
+kubectl delete deployment okpo-lab
+kubectl delete service okpo-lab
 ```
+
+To stop minikube run
+```
+minikube stop
+```
+
+<!-- kubectl run okpo-lab --image=okpo-lab --port=5000 --image-pull-policy=Never  -->
+
+<!-- --horizontal-pod-autoscaler-use-rest-clients=false -->
+<!-- kubectl delete deployment okpo-lab -->
+
+<!-- kubectl expose deployment okpo-lab --type=LoadBalancer -->
+
+
+https://kubernetes.io/docs/tasks/administer-cluster/dns-horizontal-autoscaling/
 
 Install minicube and cubectl
 https://kubernetes.io/docs/tasks/tools/install-minikube/

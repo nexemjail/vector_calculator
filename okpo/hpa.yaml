@@ -1,0 +1,15 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: okpo-lab
+  namespace: default
+  labels:
+    app: okpo-lab
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1beta1
+    kind: Deployment 
+    name: okpo-lab
+  minReplicas: 1
+  maxReplicas: 8
+  targetCPUUtilizationPercentage: 10

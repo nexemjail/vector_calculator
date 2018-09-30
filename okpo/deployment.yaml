@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: okpo-lab
+spec:
+  selector:
+    matchLabels:
+      app: okpo-lab
+      role: master
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: okpo-lab
+        role: master
+        tier: backend
+    spec:
+      containers:
+      - name: okpo-lab
+        image: okpo-lab
+        imagePullPolicy: Never
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        ports:
+        - containerPort: 5000

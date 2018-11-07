@@ -1,2 +1,2 @@
-# mag
-Master degree getting repo
+K8s vector calculator in docker written on flask
+
